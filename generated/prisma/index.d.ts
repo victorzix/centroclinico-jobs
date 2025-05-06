@@ -11870,8 +11870,18 @@ export namespace Prisma {
 
   export type AggregateEmployee = {
     _count: EmployeeCountAggregateOutputType | null
+    _avg: EmployeeAvgAggregateOutputType | null
+    _sum: EmployeeSumAggregateOutputType | null
     _min: EmployeeMinAggregateOutputType | null
     _max: EmployeeMaxAggregateOutputType | null
+  }
+
+  export type EmployeeAvgAggregateOutputType = {
+    maxDependents: number | null
+  }
+
+  export type EmployeeSumAggregateOutputType = {
+    maxDependents: number | null
   }
 
   export type EmployeeMinAggregateOutputType = {
@@ -11885,6 +11895,7 @@ export namespace Prisma {
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    maxDependents: number | null
   }
 
   export type EmployeeMaxAggregateOutputType = {
@@ -11898,6 +11909,7 @@ export namespace Prisma {
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    maxDependents: number | null
   }
 
   export type EmployeeCountAggregateOutputType = {
@@ -11911,9 +11923,18 @@ export namespace Prisma {
     isActive: number
     createdAt: number
     updatedAt: number
+    maxDependents: number
     _all: number
   }
 
+
+  export type EmployeeAvgAggregateInputType = {
+    maxDependents?: true
+  }
+
+  export type EmployeeSumAggregateInputType = {
+    maxDependents?: true
+  }
 
   export type EmployeeMinAggregateInputType = {
     id?: true
@@ -11926,6 +11947,7 @@ export namespace Prisma {
     isActive?: true
     createdAt?: true
     updatedAt?: true
+    maxDependents?: true
   }
 
   export type EmployeeMaxAggregateInputType = {
@@ -11939,6 +11961,7 @@ export namespace Prisma {
     isActive?: true
     createdAt?: true
     updatedAt?: true
+    maxDependents?: true
   }
 
   export type EmployeeCountAggregateInputType = {
@@ -11952,6 +11975,7 @@ export namespace Prisma {
     isActive?: true
     createdAt?: true
     updatedAt?: true
+    maxDependents?: true
     _all?: true
   }
 
@@ -11993,6 +12017,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: EmployeeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmployeeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: EmployeeMinAggregateInputType
@@ -12023,6 +12059,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: EmployeeCountAggregateInputType | true
+    _avg?: EmployeeAvgAggregateInputType
+    _sum?: EmployeeSumAggregateInputType
     _min?: EmployeeMinAggregateInputType
     _max?: EmployeeMaxAggregateInputType
   }
@@ -12038,7 +12076,10 @@ export namespace Prisma {
     isActive: boolean
     createdAt: Date
     updatedAt: Date
+    maxDependents: number | null
     _count: EmployeeCountAggregateOutputType | null
+    _avg: EmployeeAvgAggregateOutputType | null
+    _sum: EmployeeSumAggregateOutputType | null
     _min: EmployeeMinAggregateOutputType | null
     _max: EmployeeMaxAggregateOutputType | null
   }
@@ -12068,6 +12109,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    maxDependents?: boolean
     CustomerCard?: boolean | Employee$CustomerCardArgs<ExtArgs>
     Dependent?: boolean | Employee$DependentArgs<ExtArgs>
     Customer?: boolean | CustomerDefaultArgs<ExtArgs>
@@ -12086,6 +12128,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    maxDependents?: boolean
     Customer?: boolean | CustomerDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employee"]>
@@ -12101,6 +12144,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    maxDependents?: boolean
     Customer?: boolean | CustomerDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employee"]>
@@ -12116,9 +12160,10 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    maxDependents?: boolean
   }
 
-  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "holderId" | "name" | "position" | "cpf" | "birthDate" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["employee"]>
+  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "holderId" | "name" | "position" | "cpf" | "birthDate" | "isActive" | "createdAt" | "updatedAt" | "maxDependents", ExtArgs["result"]["employee"]>
   export type EmployeeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     CustomerCard?: boolean | Employee$CustomerCardArgs<ExtArgs>
     Dependent?: boolean | Employee$DependentArgs<ExtArgs>
@@ -12154,6 +12199,7 @@ export namespace Prisma {
       isActive: boolean
       createdAt: Date
       updatedAt: Date
+      maxDependents: number | null
     }, ExtArgs["result"]["employee"]>
     composites: {}
   }
@@ -12591,6 +12637,7 @@ export namespace Prisma {
     readonly isActive: FieldRef<"Employee", 'Boolean'>
     readonly createdAt: FieldRef<"Employee", 'DateTime'>
     readonly updatedAt: FieldRef<"Employee", 'DateTime'>
+    readonly maxDependents: FieldRef<"Employee", 'Int'>
   }
     
 
@@ -17986,7 +18033,8 @@ export namespace Prisma {
     birthDate: 'birthDate',
     isActive: 'isActive',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    maxDependents: 'maxDependents'
   };
 
   export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
@@ -19023,6 +19071,7 @@ export namespace Prisma {
     isActive?: BoolFilter<"Employee"> | boolean
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
+    maxDependents?: IntNullableFilter<"Employee"> | number | null
     CustomerCard?: XOR<CustomerCardNullableScalarRelationFilter, CustomerCardWhereInput> | null
     Dependent?: DependentListRelationFilter
     Customer?: XOR<CustomerScalarRelationFilter, CustomerWhereInput>
@@ -19040,6 +19089,7 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    maxDependents?: SortOrderInput | SortOrder
     CustomerCard?: CustomerCardOrderByWithRelationInput
     Dependent?: DependentOrderByRelationAggregateInput
     Customer?: CustomerOrderByWithRelationInput
@@ -19060,6 +19110,7 @@ export namespace Prisma {
     isActive?: BoolFilter<"Employee"> | boolean
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
+    maxDependents?: IntNullableFilter<"Employee"> | number | null
     CustomerCard?: XOR<CustomerCardNullableScalarRelationFilter, CustomerCardWhereInput> | null
     Dependent?: DependentListRelationFilter
     Customer?: XOR<CustomerScalarRelationFilter, CustomerWhereInput>
@@ -19077,9 +19128,12 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    maxDependents?: SortOrderInput | SortOrder
     _count?: EmployeeCountOrderByAggregateInput
+    _avg?: EmployeeAvgOrderByAggregateInput
     _max?: EmployeeMaxOrderByAggregateInput
     _min?: EmployeeMinOrderByAggregateInput
+    _sum?: EmployeeSumOrderByAggregateInput
   }
 
   export type EmployeeScalarWhereWithAggregatesInput = {
@@ -19096,6 +19150,7 @@ export namespace Prisma {
     isActive?: BoolWithAggregatesFilter<"Employee"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
+    maxDependents?: IntNullableWithAggregatesFilter<"Employee"> | number | null
   }
 
   export type InvoiceWhereInput = {
@@ -20260,6 +20315,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
     CustomerCard?: CustomerCardCreateNestedOneWithoutEmployeeInput
     Dependent?: DependentCreateNestedManyWithoutEmployeeInput
     Customer: CustomerCreateNestedOneWithoutEmployeeInput
@@ -20277,6 +20333,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
     CustomerCard?: CustomerCardUncheckedCreateNestedOneWithoutEmployeeInput
     Dependent?: DependentUncheckedCreateNestedManyWithoutEmployeeInput
   }
@@ -20290,6 +20347,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
     CustomerCard?: CustomerCardUpdateOneWithoutEmployeeNestedInput
     Dependent?: DependentUpdateManyWithoutEmployeeNestedInput
     Customer?: CustomerUpdateOneRequiredWithoutEmployeeNestedInput
@@ -20307,6 +20365,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
     CustomerCard?: CustomerCardUncheckedUpdateOneWithoutEmployeeNestedInput
     Dependent?: DependentUncheckedUpdateManyWithoutEmployeeNestedInput
   }
@@ -20322,6 +20381,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
   }
 
   export type EmployeeUpdateManyMutationInput = {
@@ -20333,6 +20393,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type EmployeeUncheckedUpdateManyInput = {
@@ -20346,6 +20407,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type InvoiceCreateInput = {
@@ -21481,6 +21543,11 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    maxDependents?: SortOrder
+  }
+
+  export type EmployeeAvgOrderByAggregateInput = {
+    maxDependents?: SortOrder
   }
 
   export type EmployeeMaxOrderByAggregateInput = {
@@ -21494,6 +21561,7 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    maxDependents?: SortOrder
   }
 
   export type EmployeeMinOrderByAggregateInput = {
@@ -21507,6 +21575,11 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    maxDependents?: SortOrder
+  }
+
+  export type EmployeeSumOrderByAggregateInput = {
+    maxDependents?: SortOrder
   }
 
   export type EnumInvoiceStatusFilter<$PrismaModel = never> = {
@@ -24219,6 +24292,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
     CustomerCard?: CustomerCardCreateNestedOneWithoutEmployeeInput
     Dependent?: DependentCreateNestedManyWithoutEmployeeInput
     User: UserCreateNestedOneWithoutEmployeeInput
@@ -24234,6 +24308,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
     CustomerCard?: CustomerCardUncheckedCreateNestedOneWithoutEmployeeInput
     Dependent?: DependentUncheckedCreateNestedManyWithoutEmployeeInput
   }
@@ -24620,6 +24695,7 @@ export namespace Prisma {
     isActive?: BoolFilter<"Employee"> | boolean
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
+    maxDependents?: IntNullableFilter<"Employee"> | number | null
   }
 
   export type SubscriptionUpsertWithWhereUniqueWithoutCustomerInput = {
@@ -24774,6 +24850,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
     Dependent?: DependentCreateNestedManyWithoutEmployeeInput
     Customer: CustomerCreateNestedOneWithoutEmployeeInput
     User: UserCreateNestedOneWithoutEmployeeInput
@@ -24790,6 +24867,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
     Dependent?: DependentUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
@@ -24940,6 +25018,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
     Dependent?: DependentUpdateManyWithoutEmployeeNestedInput
     Customer?: CustomerUpdateOneRequiredWithoutEmployeeNestedInput
     User?: UserUpdateOneRequiredWithoutEmployeeNestedInput
@@ -24956,6 +25035,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
     Dependent?: DependentUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
@@ -25313,6 +25393,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
     CustomerCard?: CustomerCardCreateNestedOneWithoutEmployeeInput
     Customer: CustomerCreateNestedOneWithoutEmployeeInput
     User: UserCreateNestedOneWithoutEmployeeInput
@@ -25329,6 +25410,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
     CustomerCard?: CustomerCardUncheckedCreateNestedOneWithoutEmployeeInput
   }
 
@@ -25494,6 +25576,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
     CustomerCard?: CustomerCardUpdateOneWithoutEmployeeNestedInput
     Customer?: CustomerUpdateOneRequiredWithoutEmployeeNestedInput
     User?: UserUpdateOneRequiredWithoutEmployeeNestedInput
@@ -25510,6 +25593,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
     CustomerCard?: CustomerCardUncheckedUpdateOneWithoutEmployeeNestedInput
   }
 
@@ -26665,6 +26749,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
     CustomerCard?: CustomerCardCreateNestedOneWithoutEmployeeInput
     Dependent?: DependentCreateNestedManyWithoutEmployeeInput
     Customer: CustomerCreateNestedOneWithoutEmployeeInput
@@ -26680,6 +26765,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
     CustomerCard?: CustomerCardUncheckedCreateNestedOneWithoutEmployeeInput
     Dependent?: DependentUncheckedCreateNestedManyWithoutEmployeeInput
   }
@@ -26874,6 +26960,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
     CustomerCard?: CustomerCardUpdateOneWithoutEmployeeNestedInput
     Dependent?: DependentUpdateManyWithoutEmployeeNestedInput
     Customer?: CustomerUpdateOneRequiredWithoutEmployeeNestedInput
@@ -26889,6 +26976,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
     CustomerCard?: CustomerCardUncheckedUpdateOneWithoutEmployeeNestedInput
     Dependent?: DependentUncheckedUpdateManyWithoutEmployeeNestedInput
   }
@@ -27088,6 +27176,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt: Date | string
+    maxDependents?: number | null
   }
 
   export type SubscriptionCreateManyCustomerInput = {
@@ -27201,6 +27290,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
     CustomerCard?: CustomerCardUpdateOneWithoutEmployeeNestedInput
     Dependent?: DependentUpdateManyWithoutEmployeeNestedInput
     User?: UserUpdateOneRequiredWithoutEmployeeNestedInput
@@ -27216,6 +27306,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
     CustomerCard?: CustomerCardUncheckedUpdateOneWithoutEmployeeNestedInput
     Dependent?: DependentUncheckedUpdateManyWithoutEmployeeNestedInput
   }
@@ -27230,6 +27321,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maxDependents?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type SubscriptionUpdateWithoutCustomerInput = {

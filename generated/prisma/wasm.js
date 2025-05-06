@@ -240,7 +240,8 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   birthDate: 'birthDate',
   isActive: 'isActive',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  maxDependents: 'maxDependents'
 };
 
 exports.Prisma.InvoiceScalarFieldEnum = {

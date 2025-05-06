@@ -145,20 +145,21 @@ model Dependent {
 }
 
 model Employee {
-  id           String        @id
-  userId       String        @unique
-  holderId     String
-  name         String
-  position     String?
-  cpf          String?
-  birthDate    DateTime
-  isActive     Boolean       @default(true)
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime
-  CustomerCard CustomerCard?
-  Dependent    Dependent[]
-  Customer     Customer      @relation(fields: [holderId], references: [id])
-  User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String        @id
+  userId        String        @unique
+  holderId      String
+  name          String
+  position      String?
+  cpf           String?
+  birthDate     DateTime
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime
+  maxDependents Int?
+  CustomerCard  CustomerCard?
+  Dependent     Dependent[]
+  Customer      Customer      @relation(fields: [holderId], references: [id])
+  User          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Invoice {
