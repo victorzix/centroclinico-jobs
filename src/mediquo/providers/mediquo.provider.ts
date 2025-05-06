@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { celcashRequestUtils } from '../../billing/providers/celcash/utils/celcash.utils';
 import { CreateMediquoPatientDto } from '../dto/create-mediquo-patient.dto';
 import { lastValueFrom } from 'rxjs';
+import { mediquoRequestUtils } from '../utils/mediquo-request.utils';
 
 @Injectable()
 export class MediquoProvider {
@@ -10,7 +10,7 @@ export class MediquoProvider {
   private readonly headers: {};
 
   constructor(private readonly httpService: HttpService) {
-    const { headers, url } = celcashRequestUtils();
+    const { headers, url } = mediquoRequestUtils();
     this.apiUrl = url;
     this.headers = headers;
   }
