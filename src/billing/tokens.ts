@@ -1,0 +1,1 @@
+export const BILLING_STRATEGY = Symbol('BillingStrategy');
