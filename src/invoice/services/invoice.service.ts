@@ -24,6 +24,9 @@ export class InvoiceService extends WorkerHost implements IInvoiceService {
       case 'updateInvoice':
         await this.updateInvoice(job.data);
         break;
+      case 'cancelInvoices':
+        await this.cancelInvoice(job.data);
+        break;
       default:
         throw new BadRequestException('Não foi possível processar a fila');
     }
@@ -51,7 +54,12 @@ export class InvoiceService extends WorkerHost implements IInvoiceService {
     }
   }
 
-  cancelInvoice(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async cancelInvoice(id: string): Promise<void> {
+    try {
+      await this.billingStrategy.cancelInvoice(id);
+      return;
+    } catch (err) {
+      console.error(err);
+    }
   }
 }

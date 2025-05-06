@@ -6,5 +6,5 @@ export interface BillingStrategy {
   updateCustomer: (dto: Customer) => Promise<void>;
   generateInvoice: (dto: Invoice) => Promise<string>;
   updateInvoice: (dto: Invoice) => Promise<void>;
-  cancelInvoice: () => Promise<void>;
+  cancelInvoice: (id: string) => Promise<void>;
 }

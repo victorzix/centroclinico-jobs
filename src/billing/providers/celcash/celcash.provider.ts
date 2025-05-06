@@ -120,9 +120,22 @@ export class CelcashProvider implements BillingStrategy {
     }
   }
 
-  async cancelInvoice(): Promise<void> {
-    // try {
-    //   const token = await this.generateToken();
-    // } catch (err) {}
+  async cancelInvoice(id: string): Promise<void> {
+    try {
+      const token = await this.generateToken();
+      await lastValueFrom(
+        this.httpService.delete(
+          `${this.apiUrl}charges/${id}/myId`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ),
+      );
+      return;
+    } catch (err) {
+      console.error(err.response.data.error);
+    }
   }
 }
