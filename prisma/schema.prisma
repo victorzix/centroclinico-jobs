@@ -10,17 +10,17 @@ datasource db {
 
 model Affiliate {
   id                String              @id
-  userId            String              @unique
-  code              String              @unique
   name              String
-  commissionType    CommissionType
-  commissionValue   Int
+  code              String              @unique
   cpf               String
-  phone             String?
   email             String?
   isActive          Boolean             @default(true)
+  commissionType    CommissionType
+  commissionValue   Int
   createdAt         DateTime            @default(now())
   updatedAt         DateTime
+  userId            String              @unique
+  phone             String?
   User              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   AffiliateCustomer AffiliateCustomer[]
   Customer          Customer[]
@@ -49,31 +49,31 @@ model CreditCard {
 
 model Customer {
   id                String              @id
-  userId            String              @unique
-  externalId        String?
   name              String
   document          String
   observation       String?
-  mainPaymentMethod PaymentType         @default(CREDIT_CARD)
-  status            CustomerStatus      @default(PENDING)
   email             String?             @default("example@email.com")
-  phone             String?
-  adherenceDate     DateTime
-  renovationDate    DateTime?
-  expireDate        DateTime?
-  clientType        CustomerType
-  affiliateCode     String?
   planId            String?
   cep               Int?
   address           String?
   number            Int?
   complement        String?
-  district          String?
   city              String?
   state             String?
-  isActive          Boolean             @default(true)
+  adherenceDate     DateTime
+  clientType        CustomerType
   createdAt         DateTime            @default(now())
+  expireDate        DateTime?
+  externalId        String?
+  isActive          Boolean             @default(true)
+  renovationDate    DateTime?
   updatedAt         DateTime
+  affiliateCode     String?
+  district          String?
+  userId            String              @unique
+  phone             String?
+  mainPaymentMethod PaymentType         @default(CREDIT_CARD)
+  status            CustomerStatus      @default(PENDING)
   AffiliateCustomer AffiliateCustomer[]
   CreditCard        CreditCard[]
   Affiliate         Affiliate?          @relation(fields: [affiliateCode], references: [code])
@@ -169,27 +169,28 @@ model Invoice {
   status         InvoiceStatus
   createdAt      DateTime      @default(now())
   updatedAt      DateTime
+  paymentLink    String?
   Subscription   Subscription  @relation(fields: [subscriptionId], references: [id])
 }
 
 model Plan {
   id                  String         @id
   externalId          String?
-  name                String
-  contractText        String
-  signupFee           Int
-  allowedPaymentTypes PaymentType[]
-  maxInstallments     Int
-  prices              Json
+  hasTelemedicine     Boolean        @default(false)
+  isActive            Boolean        @default(true)
   additionalInfo      String?
   isShowingInApp      Boolean        @default(true)
-  hasTelemedicine     Boolean        @default(false)
-  maxDependents       Int?
-  pricePerEmployee    Int?
-  pricePerDependent   Int?
-  isActive            Boolean        @default(true)
+  name                String
+  prices              Json
+  contractText        String
   createdAt           DateTime       @default(now())
+  maxDependents       Int?
+  maxInstallments     Int
+  pricePerDependent   Int?
+  pricePerEmployee    Int?
+  signupFee           Int
   updatedAt           DateTime
+  allowedPaymentTypes PaymentType[]
   Customer            Customer[]
   Subscription        Subscription[]
 }
@@ -200,12 +201,12 @@ model Subscription {
   planId          String
   status          SubscriptionStatus
   startDate       DateTime
-  endDate         DateTime
-  firstPayDayDate DateTime
   paymentType     PaymentType
   installments    Int
   createdAt       DateTime           @default(now())
   updatedAt       DateTime
+  endDate         DateTime
+  firstPayDayDate DateTime
   Invoice         Invoice[]
   Customer        Customer           @relation(fields: [customerId], references: [id])
   Plan            Plan               @relation(fields: [planId], references: [id])

@@ -5,6 +5,8 @@ import { HttpService } from '@nestjs/axios';
 import { Customer } from '../../../customer/entities/customer.entity';
 import { CelcashCustomerBuilder } from './builders/celcash-customer.builder';
 import { Injectable } from '@nestjs/common';
+import { Invoice } from '../../../invoice/entities/invoice.entity';
+import { CelcashInvoiceBuilder } from './builders/celcash-invoice.builder';
 
 @Injectable()
 export class CelcashProvider implements BillingStrategy {
@@ -62,8 +64,8 @@ export class CelcashProvider implements BillingStrategy {
     try {
       const token = await this.generateToken();
       await lastValueFrom(
-        this.httpService.post(
-          `${this.apiUrl}customers?myId=${dto.id}`,
+        this.httpService.put(
+          `${this.apiUrl}customers/${dto.id}/myId`,
           CelcashCustomerBuilder.buildUpdateCustomer(dto),
           {
             headers: {
@@ -78,12 +80,44 @@ export class CelcashProvider implements BillingStrategy {
     }
   }
 
-  async generateInvoice(): Promise<void> {
-    return Promise.resolve(undefined);
+  async generateInvoice(dto: Invoice): Promise<string> {
+    try {
+      const token = await this.generateToken();
+      const response = await lastValueFrom(
+        this.httpService.post(
+          `${this.apiUrl}charges`,
+          CelcashInvoiceBuilder.buildGenerateInvoice(dto),
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ),
+      );
+      return response.data.Charge.paymentLink;
+    } catch (err) {
+      console.error(err.response.data.error);
+    }
   }
 
-  async updateInvoice(): Promise<void> {
-    return Promise.resolve(undefined);
+  async updateInvoice(dto: Invoice): Promise<void> {
+    try {
+      const token = await this.generateToken();
+      await lastValueFrom(
+        this.httpService.put(
+          `${this.apiUrl}charges/${dto.id}/myId`,
+          CelcashInvoiceBuilder.buildUpdateInvoice(dto),
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ),
+      );
+      return;
+    } catch (err) {
+      console.error(err.response.data.error);
+    }
   }
 
   async cancelInvoice(): Promise<void> {

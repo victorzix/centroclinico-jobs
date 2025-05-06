@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { BillingModule } from './billing/billing.module';
 import CustomerModule from './customer/customer.module';
 import { PrismaModule } from './prisma/prisma.module';
+import InvoiceModule from './invoice/invoice.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { PrismaModule } from './prisma/prisma.module';
     }),
     PrismaModule,
     BillingModule,
-    CustomerModule
+    CustomerModule,
+    InvoiceModule,
   ],
   controllers: [],
   providers: [],

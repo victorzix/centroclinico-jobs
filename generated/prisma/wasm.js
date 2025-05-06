@@ -122,17 +122,17 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.AffiliateScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  code: 'code',
   name: 'name',
-  commissionType: 'commissionType',
-  commissionValue: 'commissionValue',
+  code: 'code',
   cpf: 'cpf',
-  phone: 'phone',
   email: 'email',
   isActive: 'isActive',
+  commissionType: 'commissionType',
+  commissionValue: 'commissionValue',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  phone: 'phone'
 };
 
 exports.Prisma.AffiliateCustomerScalarFieldEnum = {
@@ -155,31 +155,31 @@ exports.Prisma.CreditCardScalarFieldEnum = {
 
 exports.Prisma.CustomerScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  externalId: 'externalId',
   name: 'name',
   document: 'document',
   observation: 'observation',
-  mainPaymentMethod: 'mainPaymentMethod',
-  status: 'status',
   email: 'email',
-  phone: 'phone',
-  adherenceDate: 'adherenceDate',
-  renovationDate: 'renovationDate',
-  expireDate: 'expireDate',
-  clientType: 'clientType',
-  affiliateCode: 'affiliateCode',
   planId: 'planId',
   cep: 'cep',
   address: 'address',
   number: 'number',
   complement: 'complement',
-  district: 'district',
   city: 'city',
   state: 'state',
-  isActive: 'isActive',
+  adherenceDate: 'adherenceDate',
+  clientType: 'clientType',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  expireDate: 'expireDate',
+  externalId: 'externalId',
+  isActive: 'isActive',
+  renovationDate: 'renovationDate',
+  updatedAt: 'updatedAt',
+  affiliateCode: 'affiliateCode',
+  district: 'district',
+  userId: 'userId',
+  phone: 'phone',
+  mainPaymentMethod: 'mainPaymentMethod',
+  status: 'status'
 };
 
 exports.Prisma.CustomerCardScalarFieldEnum = {
@@ -250,27 +250,28 @@ exports.Prisma.InvoiceScalarFieldEnum = {
   amount: 'amount',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  paymentLink: 'paymentLink'
 };
 
 exports.Prisma.PlanScalarFieldEnum = {
   id: 'id',
   externalId: 'externalId',
-  name: 'name',
-  contractText: 'contractText',
-  signupFee: 'signupFee',
-  allowedPaymentTypes: 'allowedPaymentTypes',
-  maxInstallments: 'maxInstallments',
-  prices: 'prices',
+  hasTelemedicine: 'hasTelemedicine',
+  isActive: 'isActive',
   additionalInfo: 'additionalInfo',
   isShowingInApp: 'isShowingInApp',
-  hasTelemedicine: 'hasTelemedicine',
-  maxDependents: 'maxDependents',
-  pricePerEmployee: 'pricePerEmployee',
-  pricePerDependent: 'pricePerDependent',
-  isActive: 'isActive',
+  name: 'name',
+  prices: 'prices',
+  contractText: 'contractText',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  maxDependents: 'maxDependents',
+  maxInstallments: 'maxInstallments',
+  pricePerDependent: 'pricePerDependent',
+  pricePerEmployee: 'pricePerEmployee',
+  signupFee: 'signupFee',
+  updatedAt: 'updatedAt',
+  allowedPaymentTypes: 'allowedPaymentTypes'
 };
 
 exports.Prisma.SubscriptionScalarFieldEnum = {
@@ -279,12 +280,12 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   planId: 'planId',
   status: 'status',
   startDate: 'startDate',
-  endDate: 'endDate',
-  firstPayDayDate: 'firstPayDayDate',
   paymentType: 'paymentType',
   installments: 'installments',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  endDate: 'endDate',
+  firstPayDayDate: 'firstPayDayDate'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -325,6 +326,11 @@ exports.CommissionType = exports.$Enums.CommissionType = {
   FIXED: 'FIXED'
 };
 
+exports.CustomerType = exports.$Enums.CustomerType = {
+  PF: 'PF',
+  PJ: 'PJ'
+};
+
 exports.PaymentType = exports.$Enums.PaymentType = {
   CREDIT_CARD: 'CREDIT_CARD',
   PIX: 'PIX',
@@ -335,11 +341,6 @@ exports.CustomerStatus = exports.$Enums.CustomerStatus = {
   PENDING: 'PENDING',
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE'
-};
-
-exports.CustomerType = exports.$Enums.CustomerType = {
-  PF: 'PF',
-  PJ: 'PJ'
 };
 
 exports.InvoiceStatus = exports.$Enums.InvoiceStatus = {
