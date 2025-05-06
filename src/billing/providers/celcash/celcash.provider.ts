@@ -80,6 +80,22 @@ export class CelcashProvider implements BillingStrategy {
     }
   }
 
+  async inactivateCustomer(id: string): Promise<void> {
+    try {
+      const token = await this.generateToken();
+      await lastValueFrom(
+        this.httpService.delete(`${this.apiUrl}customers/${id}/myId`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      );
+      return;
+    } catch (err) {
+      console.error(err.response.data.error);
+    }
+  }
+
   async generateInvoice(dto: Invoice): Promise<string> {
     try {
       const token = await this.generateToken();
@@ -124,14 +140,11 @@ export class CelcashProvider implements BillingStrategy {
     try {
       const token = await this.generateToken();
       await lastValueFrom(
-        this.httpService.delete(
-          `${this.apiUrl}charges/${id}/myId`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        this.httpService.delete(`${this.apiUrl}charges/${id}/myId`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        ),
+        }),
       );
       return;
     } catch (err) {

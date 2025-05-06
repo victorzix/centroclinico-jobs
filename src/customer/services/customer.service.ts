@@ -24,6 +24,9 @@ export class CustomerService extends WorkerHost implements ICustomerService {
       case 'updateCustomer':
         await this.updateCustomer(job.data);
         break;
+      case 'inactivateCustomer':
+        await this.inactivateCustomer(job.data);
+        break;
       default:
         throw new BadRequestException('Não foi possível processar a fila');
     }
@@ -51,7 +54,12 @@ export class CustomerService extends WorkerHost implements ICustomerService {
     }
   }
 
-  inactivateCustomer(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+  async inactivateCustomer(id: string): Promise<void> {
+    try {
+      await this.billingStrategy.inactivateCustomer(id);
+      return;
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
