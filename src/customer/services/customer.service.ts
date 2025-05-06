@@ -20,22 +20,34 @@ export class CustomerService extends WorkerHost implements ICustomerService {
     switch (job.name) {
       case 'createCustomer':
         await this.createCustomer(job.data);
+        break;
+      case 'updateCustomer':
+        await this.updateCustomer(job.data);
+        break;
       default:
         throw new BadRequestException('Não foi possível processar a fila');
     }
   }
 
   async createCustomer(dto: Customer): Promise<Customer> {
-    const externalId = await this.billingStrategy.createCustomer(dto);
     try {
+      const externalId = await this.billingStrategy.createCustomer(dto);
       await this.prisma.customer.update({
         where: { id: dto.id },
         data: { externalId },
       });
+      return dto;
     } catch (err) {
       console.error(err);
     }
+  }
 
-    return dto;
+  async updateCustomer(dto: Customer): Promise<Customer> {
+    try {
+      await this.billingStrategy.updateCustomer(dto);
+      return dto;
+    } catch (err) {
+      console.error(err);
+    }
   }
 }

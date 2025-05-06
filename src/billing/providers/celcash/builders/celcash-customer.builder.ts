@@ -1,5 +1,6 @@
+import { CreateCustomerDto } from '../dto/customer/create-customer.dto';
 import { Customer } from '../../../../customer/entities/customer.entity';
-import { CreateCustomerDto } from '../../../dto/customer/create-customer.dto';
+import { UpdateCustomerDto } from '../dto/customer/update-customer.dto';
 
 export class CelcashCustomerBuilder {
   static buildCreateCustomer(dto: Customer): CreateCustomerDto {
@@ -17,6 +18,24 @@ export class CelcashCustomerBuilder {
         street: dto.address ?? 'Sem informações',
         zipCode: dto.cep ?? 95500000,
         state: dto.state ?? 'RS',
+      },
+    };
+  }
+
+  static buildUpdateCustomer(dto: Customer): UpdateCustomerDto {
+    return {
+      name: dto.name,
+      phones: [Number(dto.phone)],
+      document: dto.document,
+      emails: [dto.email],
+      Address: {
+        city: dto.city,
+        complement: dto.complement,
+        neighborhood: dto.district,
+        number: dto.number,
+        state: dto.state,
+        street: dto.address,
+        zipCode: dto.cep,
       },
     };
   }

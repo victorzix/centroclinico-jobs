@@ -5,7 +5,6 @@ import { HttpService } from '@nestjs/axios';
 import { Customer } from '../../../customer/entities/customer.entity';
 import { CelcashCustomerBuilder } from './builders/celcash-customer.builder';
 import { Injectable } from '@nestjs/common';
-import * as process from 'node:process';
 
 @Injectable()
 export class CelcashProvider implements BillingStrategy {
@@ -55,12 +54,28 @@ export class CelcashProvider implements BillingStrategy {
       );
       return response.data.Customer.galaxPayId.toString();
     } catch (err) {
-      console.error(err);
+      console.error(err.response.data.error);
     }
   }
 
-  async updateCustomer(): Promise<void> {
-    return Promise.resolve(undefined);
+  async updateCustomer(dto: Customer): Promise<void> {
+    try {
+      const token = await this.generateToken();
+      await lastValueFrom(
+        this.httpService.post(
+          `${this.apiUrl}customers?myId=${dto.id}`,
+          CelcashCustomerBuilder.buildUpdateCustomer(dto),
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ),
+      );
+      return;
+    } catch (err) {
+      console.error(err.response.data.error);
+    }
   }
 
   async generateInvoice(): Promise<void> {
@@ -72,8 +87,8 @@ export class CelcashProvider implements BillingStrategy {
   }
 
   async cancelInvoice(): Promise<void> {
-    try {
-      const token = await this.generateToken();
-    } catch (err) {}
+    // try {
+    //   const token = await this.generateToken();
+    // } catch (err) {}
   }
 }
