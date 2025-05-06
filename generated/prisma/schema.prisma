@@ -1,0 +1,270 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Affiliate {
+  id                String              @id
+  userId            String              @unique
+  code              String              @unique
+  name              String
+  commissionType    CommissionType
+  commissionValue   Int
+  cpf               String
+  phone             String?
+  email             String?
+  isActive          Boolean             @default(true)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime
+  User              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  AffiliateCustomer AffiliateCustomer[]
+  Customer          Customer[]
+}
+
+model AffiliateCustomer {
+  id          String    @id
+  customerId  String
+  affiliateId String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime
+  Affiliate   Affiliate @relation(fields: [affiliateId], references: [id])
+  Customer    Customer  @relation(fields: [customerId], references: [id])
+}
+
+model CreditCard {
+  id        String   @id
+  clientId  String
+  token     String
+  last4     String
+  brand     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  Customer  Customer @relation(fields: [clientId], references: [id])
+}
+
+model Customer {
+  id                String              @id
+  userId            String              @unique
+  externalId        String?
+  name              String
+  document          String
+  observation       String?
+  mainPaymentMethod PaymentType         @default(CREDIT_CARD)
+  status            CustomerStatus      @default(PENDING)
+  email             String?             @default("example@email.com")
+  phone             String?
+  adherenceDate     DateTime
+  renovationDate    DateTime?
+  expireDate        DateTime?
+  clientType        CustomerType
+  affiliateCode     String?
+  planId            String?
+  cep               Int?
+  address           String?
+  number            Int?
+  complement        String?
+  district          String?
+  city              String?
+  state             String?
+  isActive          Boolean             @default(true)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime
+  AffiliateCustomer AffiliateCustomer[]
+  CreditCard        CreditCard[]
+  Affiliate         Affiliate?          @relation(fields: [affiliateCode], references: [code])
+  Plan              Plan?               @relation(fields: [planId], references: [id])
+  User              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  CustomerCard      CustomerCard?
+  CustomerPfData    CustomerPfData?
+  CustomerPjData    CustomerPjData?
+  Dependent         Dependent[]
+  Employee          Employee[]
+  Subscription      Subscription[]
+}
+
+model CustomerCard {
+  id          String     @id
+  cardNumber  String     @unique
+  expireDate  DateTime
+  customerId  String?    @unique
+  dependentId String?    @unique
+  employeeId  String?    @unique
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime
+  Customer    Customer?  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  Dependent   Dependent? @relation(fields: [dependentId], references: [id], onDelete: Cascade)
+  Employee    Employee?  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+model CustomerPfData {
+  id         String   @id
+  customerId String   @unique
+  birthDate  DateTime
+  rg         String?
+  cpf        String
+  sex        String?
+  civilState String?
+  job        String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+  Customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
+
+model CustomerPjData {
+  id             String   @id
+  customerId     String   @unique
+  representative String?
+  cnpj           String
+  cpf            String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+  Customer       Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
+
+model Dependent {
+  id                  String        @id
+  userId              String        @unique
+  holderId            String
+  name                String
+  relationship        String?
+  employeeDependentId String?
+  cpf                 String?
+  birthDate           DateTime
+  isActive            Boolean       @default(true)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime
+  CustomerCard        CustomerCard?
+  Employee            Employee?     @relation(fields: [employeeDependentId], references: [id])
+  Customer            Customer      @relation(fields: [holderId], references: [id])
+  User                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Employee {
+  id           String        @id
+  userId       String        @unique
+  holderId     String
+  name         String
+  position     String?
+  cpf          String?
+  birthDate    DateTime
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime
+  CustomerCard CustomerCard?
+  Dependent    Dependent[]
+  Customer     Customer      @relation(fields: [holderId], references: [id])
+  User         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Invoice {
+  id             String        @id
+  subscriptionId String
+  dueDate        DateTime
+  amount         Int
+  status         InvoiceStatus
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime
+  Subscription   Subscription  @relation(fields: [subscriptionId], references: [id])
+}
+
+model Plan {
+  id                  String         @id
+  externalId          String?
+  name                String
+  contractText        String
+  signupFee           Int
+  allowedPaymentTypes PaymentType[]
+  maxInstallments     Int
+  prices              Json
+  additionalInfo      String?
+  isShowingInApp      Boolean        @default(true)
+  hasTelemedicine     Boolean        @default(false)
+  maxDependents       Int?
+  pricePerEmployee    Int?
+  pricePerDependent   Int?
+  isActive            Boolean        @default(true)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime
+  Customer            Customer[]
+  Subscription        Subscription[]
+}
+
+model Subscription {
+  id              String             @id
+  customerId      String
+  planId          String
+  status          SubscriptionStatus
+  startDate       DateTime
+  endDate         DateTime
+  firstPayDayDate DateTime
+  paymentType     PaymentType
+  installments    Int
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime
+  Invoice         Invoice[]
+  Customer        Customer           @relation(fields: [customerId], references: [id])
+  Plan            Plan               @relation(fields: [planId], references: [id])
+}
+
+model User {
+  id        String     @id
+  username  String     @unique
+  password  String
+  type      UserType
+  createdAt DateTime   @default(now())
+  updatedAt DateTime
+  Affiliate Affiliate?
+  Customer  Customer?
+  Dependent Dependent?
+  Employee  Employee?
+}
+
+enum CommissionType {
+  PERCENT
+  FIXED
+}
+
+enum CustomerStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+}
+
+enum CustomerType {
+  PF
+  PJ
+}
+
+enum InvoiceStatus {
+  PAID
+  PENDING
+  OVERDUE
+  CANCELED
+}
+
+enum PaymentType {
+  CREDIT_CARD
+  PIX
+  BOLETO
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PENDING
+  CANCELED
+}
+
+enum UserType {
+  HOLDER
+  AFFILIATE
+  DEPENDENT
+  EMPLOYEE
+  ADMIN
+  COMMERCIAL
+  FINANCIAL
+}
