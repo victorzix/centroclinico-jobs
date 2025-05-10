@@ -9,7 +9,7 @@ export class CelcashCustomerBuilder {
       document: dto.document,
       emails: [dto.email],
       myId: dto.id,
-      phones: [dto.phone ? Number(dto.phone) : 0],
+      phones: [dto.phone ? Number(dto.phone) : 2422212734],
       Address: {
         city: dto.city ?? 'Sem informações',
         complement: dto.complement,
@@ -25,7 +25,7 @@ export class CelcashCustomerBuilder {
   static buildUpdateCustomer(dto: Customer): UpdateCustomerDto {
     return {
       name: dto.name,
-      phones: [Number(dto.phone)],
+      phones: [Number(dto.phone ?? "2422212734")],
       document: dto.document,
       emails: [dto.email],
       Address: {
